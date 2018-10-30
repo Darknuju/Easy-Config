@@ -5,6 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class EasyConfig {
     File rawConfigFile;
     YamlConfiguration yamlConfig;
     Map<String, Object> values;
+    ArrayList<ConfigComponent> configComponentList;
 
     public File getRawConfigFile()  {
         return rawConfigFile;
@@ -54,6 +56,7 @@ public class EasyConfig {
         this.rawConfigFile = rawConfigFile;
         this.yamlConfig = YamlConfiguration.loadConfiguration(this.rawConfigFile);
         values = new HashMap<>();
+        configComponentList = new ArrayList<>();
 
         if (loadAllValuesToMemory) {
             for(String key : yamlConfig.getKeys(true)) {
@@ -115,16 +118,21 @@ public class EasyConfig {
      *
      */
     public boolean loadConfigurationIntoMemory(String path) {
+        boolean returnVal = false;
+
         if (!Util.IsNotNull(yamlConfig)) {
-            return false;
+            return returnVal;
         }
 
         if (yamlConfig.contains(path)) {
             values.put(path, yamlConfig.get(path));
-            return true;
+            returnVal = true;
         } else {
-            return false;
+            returnVal = false;
         }
+
+        update();
+        return returnVal;
     }
 
     /**
@@ -138,17 +146,22 @@ public class EasyConfig {
      *
      */
     public boolean unloadConfigurationFromMemory(String path) throws IOException {
+        boolean returnVal = false;
+
         if (!Util.IsNotNull(yamlConfig, rawConfigFile, values)) {
-            return false;
+            return returnVal;
         }
 
         if (values.keySet().contains(path)) {
             yamlConfig.set(path, values.get(path));
             yamlConfig.save(rawConfigFile);
-            return true;
+            returnVal = true;
         } else {
-            return false;
+            returnVal = false;
         }
+
+        update();
+        return returnVal;
     }
 
     /**
@@ -161,6 +174,11 @@ public class EasyConfig {
      */
     public boolean isLoadedToMemory(String path) {
         return values.keySet().contains(path);
+    }
+
+    /** Updates all config components */
+    private void update() {
+        configComponentList.forEach((component) -> component.setComponentConfig(this));
     }
 
 }
