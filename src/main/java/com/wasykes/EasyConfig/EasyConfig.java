@@ -10,18 +10,18 @@ import java.util.Map;
 
 /**
  *
- *  The main class of the Easy Config library
+ * The main class of the Easy Config library
  *
- *  @author Darknuju
- *  @version 1.0
- *  @since 10/29/2018
+ * @author Darknuju
+ * @version 1.0
+ * @since 10/29/2018
  *
  */
 public class EasyConfig {
 
     File rawConfigFile;
     YamlConfiguration yamlConfig;
-    public Map<String, Object> values;
+    Map<String, Object> values;
 
     public File getRawConfigFile()  {
         return rawConfigFile;
