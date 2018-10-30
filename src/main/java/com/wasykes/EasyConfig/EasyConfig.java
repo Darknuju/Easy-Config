@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -174,6 +175,10 @@ public class EasyConfig {
      */
     public boolean isLoadedToMemory(String path) {
         return values.keySet().contains(path);
+    }
+
+    public Set<String> getPaths() {
+        return values.keySet();
     }
 
     /** Updates all config components */
