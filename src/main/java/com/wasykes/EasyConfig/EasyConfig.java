@@ -1,5 +1,6 @@
 package com.wasykes.EasyConfig;
 
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
@@ -20,7 +21,7 @@ public class EasyConfig {
 
     File rawConfigFile;
     YamlConfiguration yamlConfig;
-    Map<String, Object> values;
+    public Map<String, Object> values;
 
     public File getRawConfigFile()  {
         return rawConfigFile;
@@ -38,6 +39,35 @@ public class EasyConfig {
     /**
      *
      * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
+     * Writes to disk if file not created. Reads from file if loadAllValuesToMemory is true
+     *
+     * @param rawConfigFile File object for config
+     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically
+     * @throws IOException Throws IOException if unable to create or access file
+     *
+     */
+    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
+        if (!rawConfigFile.exists()) {
+            rawConfigFile.createNewFile();
+        }
+
+        this.rawConfigFile = rawConfigFile;
+        this.yamlConfig = YamlConfiguration.loadConfiguration(this.rawConfigFile);
+        values = new HashMap<>();
+
+        if (loadAllValuesToMemory) {
+            for(String key : yamlConfig.getKeys(true)) {
+                Object o = yamlConfig.get(key);
+                if (o != null && !(o instanceof MemorySection)){
+                    values.put(key, o);
+                }
+            }
+        }
+    }
+
+    /**
+     *
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
      * Writes to disk if file not created
      *
      * @param rawConfigFile File object for config
@@ -45,13 +75,7 @@ public class EasyConfig {
      *
      */
     public EasyConfig(File rawConfigFile) throws IOException {
-        if (!rawConfigFile.exists()) {
-            rawConfigFile.createNewFile();
-        }
-
-        this.rawConfigFile = rawConfigFile;
-        this.yamlConfig = YamlConfiguration.loadConfiguration(this.rawConfigFile);
-        values = new HashMap<String, Object>();
+        this(rawConfigFile, false);
     }
 
     /**
@@ -65,6 +89,20 @@ public class EasyConfig {
      */
     public EasyConfig(String path) throws IOException {
         this(new File(path));
+    }
+
+    /**
+     *
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
+     * Writes to disk if file not created
+     *
+     * @param path String path for config file
+     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically
+     * @throws IOException Throws IOException if unable to create or access file
+     *
+     */
+    public EasyConfig(String path, boolean loadAllValuesToMemory) throws IOException {
+        this(new File(path), loadAllValuesToMemory);
     }
 
     /**

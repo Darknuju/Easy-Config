@@ -9,8 +9,8 @@
         <module name="easy-config" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="easy-config" target="1.5" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="easy-config" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
