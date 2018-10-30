@@ -120,7 +120,7 @@ public class EasyConfig {
         }
 
         if (yamlConfig.contains(path)) {
-            setValue(path, yamlConfig.get(path));
+            values.put(path, yamlConfig.get(path));
             return true;
         } else {
             return false;
