@@ -24,6 +24,7 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
         if (label.equalsIgnoreCase(commandLabel)) {
             if (args.length == 0) {
                 //TODO: Implement usage syntax message
+                return true;
             }
             switch(args[0].toLowerCase()) {
                 case "list":
