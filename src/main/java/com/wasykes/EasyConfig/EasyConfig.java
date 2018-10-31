@@ -50,6 +50,9 @@ public class EasyConfig {
      *
      */
     public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
+        if (!rawConfigFile.getParentFile().exists()) {
+            rawConfigFile.getParentFile().mkdir();
+        }
         if (!rawConfigFile.exists()) {
             rawConfigFile.createNewFile();
         }
@@ -184,6 +187,17 @@ public class EasyConfig {
     /** Updates all config components */
     private void update() {
         configComponentList.forEach((component) -> component.setComponentConfig(this));
+    }
+
+    public void unloadAllValues() throws IOException {
+        for(String path : values.keySet()) {
+            yamlConfig.set(path, values.get(path));
+        }
+        yamlConfig.save(rawConfigFile);
+    }
+
+    public void addConfigComponent(ConfigComponent component) {
+        configComponentList.add(component);
     }
 
 }
