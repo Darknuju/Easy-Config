@@ -1,10 +1,13 @@
 import com.wasykes.EasyConfig.Util;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class PathListTest {
+
+    @Ignore
     @Test
     public void TestBuildPathList() {
         Set<String> paths = new LinkedHashSet<>();
