@@ -3,6 +3,7 @@ package com.wasykes.EasyConfig.command;
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
+import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import java.util.Arrays;
 
@@ -47,8 +48,7 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
                 case "set":
                     return executeSet(args);
                 case "get":
-                    //TODO:
-                    break;
+                    return executeGet(sender, args);
             }
         }
         return false;
@@ -81,6 +81,23 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
             String value = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
 
             getComponentConfig().setValue(path, value);
+            return true;
+        }
+        return true;
+    }
+
+    private boolean executeGet(CommandSender sender, String[] args) {
+        if (args.length > 1) {
+            String path = args[1];
+
+            if (!getComponentConfig().isLoadedToMemory(path)) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&',
+                        "&4No such value loaded into memory! (Try using /" + commandLabel + " load <path> if you need to load this config value)"));
+                return false;
+            }
+
+            String value = getComponentConfig().getValue(path).toString();
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1" + path + "&6: " + value));
             return true;
         }
         return true;
