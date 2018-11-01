@@ -1,24 +1,32 @@
 package com.wasykes.EasyConfig.command;
 
-import com.google.common.collect.Sets;
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
 import org.bukkit.command.*;
-
 import java.util.Arrays;
-import java.util.LinkedHashSet;
-import java.util.Set;
 
 /**
  *
  * Class used to implement live config editing commands.
+ *
+ * @author Darknuju
+ * @version 1.0
+ * @since 10/30/2018
  *
  */
 public class LiveEditCommand extends ConfigComponent implements CommandExecutor {
 
     private final String commandLabel;
 
+    /**
+     *
+     * Constructs component.
+     *
+     * @param componentConfig Config component is binded to.
+     * @param label Command label.
+     *
+     */
     public LiveEditCommand(EasyConfig componentConfig, String label) {
         super(componentConfig);
         commandLabel = label;
@@ -46,11 +54,27 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
         return false;
     }
 
+    /**
+     *
+     * List command to list all paths in memory.
+     *
+     * @param sender Sender of command.
+     * @return Boolean which is passed back to be returned in onCommand in proper use.
+     *
+     */
     private boolean executeList(CommandSender sender) {
         sender.sendMessage(Util.buildPathListMessage(getComponentConfig().getPaths()));
         return true;
     }
 
+    /**
+     *
+     * Set command edits configuration in memory.
+     *
+     * @param args Arguments of command.
+     * @return Boolean which is passed back to be returned in onCommand in proper use.
+     *
+     */
     private boolean executeSet(String[] args) {
         if (args.length > 3) {
             String path = args[1];

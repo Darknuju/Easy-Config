@@ -1,8 +1,8 @@
 package com.wasykes.EasyConfig;
 
+import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.Set;
 
 /**
  *
- * The main class of the Easy Config library
+ * The main class of the Easy Config library.
  *
  * @author Darknuju
  * @version 1.0
@@ -41,15 +41,15 @@ public class EasyConfig {
 
     /**
      *
-     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
-     * Writes to disk if file not created. Reads from file if loadAllValuesToMemory is true
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist.
+     * Writes to disk if file not created. Reads from file if loadAllValuesToMemory is true.
      *
-     * @param rawConfigFile File object for config
-     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically
-     * @throws IOException Throws IOException if unable to create or access file
+     * @param rawConfigFile File object for config.
+     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically.
+     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
+    public EasyConfig(@NotNull File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
         if (!rawConfigFile.getParentFile().exists()) {
             rawConfigFile.getParentFile().mkdir();
         }
@@ -74,11 +74,11 @@ public class EasyConfig {
 
     /**
      *
-     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
-     * Writes to disk if file not created
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist.
+     * Writes to disk if file not created.
      *
-     * @param rawConfigFile File object for config
-     * @throws IOException Throws IOException if unable to create or access file
+     * @param rawConfigFile File object for config.
+     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
     public EasyConfig(File rawConfigFile) throws IOException {
@@ -87,11 +87,11 @@ public class EasyConfig {
 
     /**
      *
-     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
-     * Writes to disk if file not created
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist.
+     * Writes to disk if file not created.
      *
-     * @param path String path for config file
-     * @throws IOException Throws IOException if unable to create or access file
+     * @param path String path for config file.
+     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
     public EasyConfig(String path) throws IOException {
@@ -100,12 +100,12 @@ public class EasyConfig {
 
     /**
      *
-     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist
-     * Writes to disk if file not created
+     * Constructs EasyConfig: This includes generating the file specified if it doesn't exist.
+     * Writes to disk if file not created.
      *
-     * @param path String path for config file
-     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically
-     * @throws IOException Throws IOException if unable to create or access file
+     * @param path String path for config file.
+     * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically.
+     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
     public EasyConfig(String path, boolean loadAllValuesToMemory) throws IOException {
@@ -114,11 +114,11 @@ public class EasyConfig {
 
     /**
      *
-     * Loads value from path in config into memory which can be retrieved or changed using getValue or setValue
-     * Reads from disk
+     * Loads value from path in config into memory which can be retrieved or changed using getValue or setValue.
+     * Reads from disk.
      *
-     * @param path  Configuration path
-     * @return Boolean indicating whether or not value existed at path and was successfully loaded
+     * @param path  Configuration path.
+     * @return Boolean indicating whether or not value existed at path and was successfully loaded.
      *
      */
     public boolean loadConfigurationIntoMemory(String path) {
@@ -141,12 +141,12 @@ public class EasyConfig {
 
     /**
      *
-     * Unloads from memory and writes updated value to config
-     * Writes to disk
+     * Unloads from memory and writes updated value to config.
+     * Writes to disk.
      *
-     * @param path Configuration path
-     * @return Boolean indicating whether or not value existed at path and was successfully unloaded
-     * @throws IOException Throws exception when writing data
+     * @param path Configuration path.
+     * @return Boolean indicating whether or not value existed at path and was successfully unloaded.
+     * @throws IOException Throws exception when writing data.
      *
      */
     public boolean unloadConfigurationFromMemory(String path) throws IOException {
@@ -170,25 +170,43 @@ public class EasyConfig {
 
     /**
      *
-     * Checks if value is loaded to memory
+     * Checks if value is loaded to memory.
      *
-     * @param path Configuration path
-     * @return Boolean whether value is loaded or not
+     * @param path Configuration path.
+     * @return Boolean whether value is loaded or not.
      *
      */
     public boolean isLoadedToMemory(String path) {
         return values.keySet().contains(path);
     }
 
+    /**
+     *
+     * Get's all paths loaded into memory.
+     *
+     * @return Set of strings of each path.
+     *
+     */
     public Set<String> getPaths() {
         return values.keySet();
     }
 
-    /** Updates all config components */
+    /**
+     *
+     * Updates all config components.
+     *
+     */
     private void update() {
         configComponentList.forEach((component) -> component.setComponentConfig(this));
     }
 
+    /**
+     *
+     * Unloads all values currently in memory and writes them all to config.
+     * Writes to disk.
+     * @throws IOException Throws IOException if saving to config fails.
+     *
+     */
     public void unloadAllValues() throws IOException {
         for(String path : values.keySet()) {
             yamlConfig.set(path, values.get(path));
@@ -196,6 +214,13 @@ public class EasyConfig {
         yamlConfig.save(rawConfigFile);
     }
 
+    /**
+     *
+     * Add's components allowing for more functionality tot he config.
+     *
+     * @param component Component to be added.
+     *
+     */
     public void addConfigComponent(ConfigComponent component) {
         configComponentList.add(component);
     }
