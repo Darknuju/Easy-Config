@@ -1,6 +1,5 @@
 package com.wasykes.EasyConfig;
 
-import com.sun.istack.internal.NotNull;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
@@ -49,7 +48,7 @@ public class EasyConfig {
      * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(@NotNull File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
+    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
         if (!rawConfigFile.getParentFile().exists()) {
             rawConfigFile.getParentFile().mkdir();
         }
