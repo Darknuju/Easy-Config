@@ -9,7 +9,7 @@ import java.io.IOException;
 public class TypeStoreTest {
 
     @Test
-    public void TestAbilityToStoreString() throws IOException {
+    public void testAbilityToStoreString() throws IOException {
         EasyConfig config = new EasyConfig("./testConfigs/testTypes.yml");
         config.setValue("String.store", "This is a test string");
         config.unloadAllValues();
@@ -18,7 +18,7 @@ public class TypeStoreTest {
     }
 
     @Test
-    public void TestAbilityToStoreInt() throws IOException {
+    public void testAbilityToStoreInt() throws IOException {
         EasyConfig config = new EasyConfig("./testConfigs/testTypes.yml");
         config.setValue("Int.store", 50);
         config.unloadAllValues();
@@ -27,7 +27,7 @@ public class TypeStoreTest {
     }
 
     @Test
-    public void TestAbilityToStoreEnum() throws IOException {
+    public void testAbilityToStoreEnum() throws IOException {
         EasyConfig config = new EasyConfig("./testConfigs/testTypes.yml");
         config.setValue("Enum.store", Material.DIRT);
         config.unloadAllValues();

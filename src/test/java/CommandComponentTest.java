@@ -27,7 +27,7 @@ public class CommandComponentTest {
     }
 
     @Test
-    public void TestPathListListsAllElements() {
+    public void testPathListListsAllElements() {
         String[] args = new String[1];
         args[0] = "list";
         command.onCommand(mockSender, mockCommand, "test", args);
@@ -40,7 +40,7 @@ public class CommandComponentTest {
     }
 
     @Test
-    public void TestValueGetGetsIntegerValue() {
+    public void testValueGetGetsIntegerValue() {
         String[] args = new String[2];
         args[0] = "get";
         args[1] = "Test1";
@@ -49,7 +49,7 @@ public class CommandComponentTest {
     }
 
     @Test
-    public void TestValueGetGetsStringValue() {
+    public void testValueGetGetsStringValue() {
         String[] args = new String[2];
         args[0] = "get";
         args[1] = "Test2";
@@ -58,7 +58,7 @@ public class CommandComponentTest {
     }
 
     @Test
-    public void TestValueGetGetsEnumValue() {
+    public void testValueGetGetsEnumValue() {
         String[] args = new String[2];
         args[0] = "get";
         args[1] = "Test3";
@@ -67,7 +67,7 @@ public class CommandComponentTest {
     }
 
     @Test
-    public void TestValueSetSetsStringValue() {
+    public void testValueSetSetsStringValue() {
         String[] args = new String[5];
         args[0] = "set";
         args[1] = "Test2";
@@ -81,8 +81,8 @@ public class CommandComponentTest {
     @After
     public void deleteConfig() {
         File fileToDelete = new File("./testConfigs/testConfig.yml");
-        Assert.assertTrue("Should delete config file!", fileToDelete.delete());
+        fileToDelete.delete();
         File folderToDelete = new File("./testConfigs");
-        Assert.assertTrue("Should delete config folder!", folderToDelete.delete());
+        folderToDelete.delete();
     }
 }
