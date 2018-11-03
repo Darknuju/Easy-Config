@@ -117,12 +117,6 @@ public class EasyConfig {
         this(new File(path), loadAllValuesToMemory);
     }
 
-    //TODO: Add documentation
-    public void saveDefaultConfig(JavaPlugin plugin) {
-        plugin.getConfig();
-        plugin.saveDefaultConfig();
-    }
-
     /**
      *
      * Loads value from path in config into memory which can be retrieved or changed using getValue or setValue.
