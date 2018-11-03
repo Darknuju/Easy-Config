@@ -33,13 +33,26 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
         commandLabel = label;
     }
 
+    private void sendUsageMessage(CommandSender sender, String command) {
+        switch(command) {
+            case "":
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get>"));
+            case "list":
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " list"));
+            case "set":
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " set path <string/number/decimal> value"));
+            case "get":
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " get path"));
+        }
+    }
+
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (label.equalsIgnoreCase(commandLabel)
                 && (sender.hasPermission(cmd.getPermission())
                     || sender instanceof  ConsoleCommandSender)) {
             if (args.length == 0) {
-                //TODO: Implement usage syntax message
+                sendUsageMessage(sender, "");
                 return true;
             }
             switch(args[0].toLowerCase()) {
@@ -49,6 +62,9 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
                     return executeSet(sender, args);
                 case "get":
                     return executeGet(sender, args);
+                default:
+                    sendUsageMessage(sender, "");
+                    return false;
             }
         }
         return false;
@@ -79,8 +95,8 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
         if (args.length > 3) {
             String path = args[1];
             String type = args[2];
-            Object value = null;
-            switch (type.toLowerCase()) {
+            Object value;
+            switch(type.toLowerCase()) {
                 case "string":
                     value = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
                     break;
@@ -101,12 +117,12 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
                     }
                     break;
                 default:
-                    //TODO: Usage
+                    sendUsageMessage(sender, "set");
+                    return false;
             }
 
             getComponentConfig().setValue(path, value);
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Set value!"));
-            return true;
         }
         return true;
     }
@@ -125,6 +141,7 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1" + path + "&6: " + value));
             return true;
         }
-        return true;
+        sendUsageMessage(sender, "get");
+        return false;
     }
 }
