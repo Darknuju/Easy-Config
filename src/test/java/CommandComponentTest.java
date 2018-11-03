@@ -68,11 +68,12 @@ public class CommandComponentTest {
 
     @Test
     public void TestValueSetSetsStringValue() {
-        String[] args = new String[4];
+        String[] args = new String[5];
         args[0] = "set";
         args[1] = "Test2";
-        args[2] = "This";
-        args[3] = "message";
+        args[2] = "string";
+        args[3] = "This";
+        args[4] = "message";
         command.onCommand(mockSender, mockCommand, "test", args);
         Assert.assertEquals("Value should equal: This message!", "This message", config.getValue("Test2"));
     }

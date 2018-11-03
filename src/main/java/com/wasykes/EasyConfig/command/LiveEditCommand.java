@@ -46,7 +46,7 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
                 case "list":
                     return executeList(sender);
                 case "set":
-                    return executeSet(args);
+                    return executeSet(sender, args);
                 case "get":
                     return executeGet(sender, args);
             }
@@ -75,12 +75,37 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
      * @return Boolean which is passed back to be returned in onCommand in proper use.
      *
      */
-    private boolean executeSet(String[] args) {
+    private boolean executeSet(CommandSender sender, String[] args) {
         if (args.length > 3) {
             String path = args[1];
-            String value = String.join(" ", Arrays.copyOfRange(args, 2, args.length));
+            String type = args[2];
+            Object value = null;
+            switch (type.toLowerCase()) {
+                case "string":
+                    value = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
+                    break;
+                case "number":
+                    try {
+                        value = Integer.valueOf(args[3]);
+                    } catch(Exception e) {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Invalid number value!"));
+                        return false;
+                    }
+                    break;
+                case "decimal":
+                    try {
+                        value = Double.valueOf(args[3]);
+                    } catch(Exception e) {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Invalid decimal value!"));
+                        return false;
+                    }
+                    break;
+                default:
+                    //TODO: Usage
+            }
 
             getComponentConfig().setValue(path, value);
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Set value!"));
             return true;
         }
         return true;
