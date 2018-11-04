@@ -15,6 +15,7 @@ public abstract class ConfigComponent {
 
     protected ConfigComponent(EasyConfig componentConfig) {
         this.componentConfig = componentConfig;
+        this.componentConfig.addConfigComponent(this);
     }
 
     public void setComponentConfig(EasyConfig componentConfig) {

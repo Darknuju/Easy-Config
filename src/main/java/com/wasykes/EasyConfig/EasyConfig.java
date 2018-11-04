@@ -132,21 +132,16 @@ public class EasyConfig {
      *
      */
     public boolean loadConfigurationIntoMemory(String path) {
-        boolean returnVal = false;
-
         if (!Util.IsNotNull(yamlConfig)) {
-            return returnVal;
+            return false;
         }
 
         if (yamlConfig.contains(path)) {
             values.put(path, yamlConfig.get(path));
-            returnVal = true;
+            return true;
         } else {
-            returnVal = false;
+            return false;
         }
-
-        update();
-        return returnVal;
     }
 
     /**
@@ -160,22 +155,17 @@ public class EasyConfig {
      *
      */
     public boolean unloadConfigurationFromMemory(String path) throws IOException {
-        boolean returnVal = false;
-
         if (!Util.IsNotNull(yamlConfig, rawConfigFile, values)) {
-            return returnVal;
+            return false;
         }
 
         if (values.keySet().contains(path)) {
             yamlConfig.set(path, values.get(path));
             yamlConfig.save(rawConfigFile);
-            returnVal = true;
+            return true;
         } else {
-            returnVal = false;
+            return false;
         }
-
-        update();
-        return returnVal;
     }
 
     /**
@@ -188,15 +178,6 @@ public class EasyConfig {
      */
     public boolean isLoadedToMemory(String path) {
         return values.keySet().contains(path);
-    }
-
-    /**
-     *
-     * Updates all config components.
-     *
-     */
-    private void update() {
-        configComponentList.forEach((component) -> component.setComponentConfig(this));
     }
 
     /**
