@@ -40,6 +40,17 @@ public class EasyConfig {
 
     /**
      *
+     * Get's all paths loaded into memory.
+     *
+     * @return Set of strings of each path.
+     *
+     */
+    public Set<String> getPaths() {
+        return values.keySet();
+    }
+
+    /**
+     *
      * Constructs EasyConfig: This includes generating the file specified if it doesn't exist.
      * Writes to disk if file not created. Reads from file if loadAllValuesToMemory is true.
      *
@@ -177,17 +188,6 @@ public class EasyConfig {
      */
     public boolean isLoadedToMemory(String path) {
         return values.keySet().contains(path);
-    }
-
-    /**
-     *
-     * Get's all paths loaded into memory.
-     *
-     * @return Set of strings of each path.
-     *
-     */
-    public Set<String> getPaths() {
-        return values.keySet();
     }
 
     /**
