@@ -2,7 +2,6 @@ import com.wasykes.EasyConfig.EasyConfig;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
-
 import java.io.File;
 import java.io.IOException;
 
