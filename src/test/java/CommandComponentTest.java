@@ -16,7 +16,7 @@ public class CommandComponentTest {
 
     @Before
     public void initConfig() throws IOException {
-        config = new EasyConfig("./testConfigs/testConfig.yml");
+        config = new EasyConfig("./testConfigs/testConfig.yml", false, false);
         Assert.assertNotNull("Config should not be null!", config);
         config.setValue("Test1", 3);
         config.setValue("Test2", "Success!");
@@ -76,13 +76,5 @@ public class CommandComponentTest {
         args[4] = "message";
         command.onCommand(mockSender, mockCommand, "test", args);
         Assert.assertEquals("Value should equal: This message!", "This message", config.getValue("Test2"));
-    }
-
-    @After
-    public void deleteConfig() {
-        File fileToDelete = new File("./testConfigs/testConfig.yml");
-        fileToDelete.delete();
-        File folderToDelete = new File("./testConfigs");
-        folderToDelete.delete();
     }
 }

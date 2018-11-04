@@ -2,6 +2,7 @@ import com.wasykes.EasyConfig.EasyConfig;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -9,7 +10,7 @@ public class ConstructorTest {
 
     @Test
     public void testConstructingWithFileObjectAndLoadAllValuesSetToTrueNotNull() throws IOException {
-        EasyConfig config = new EasyConfig(new File("./testConfigs/config.yml"), true);
+        EasyConfig config = new EasyConfig(new File("./testConfigs/config.yml"), true, true);
         Assert.assertNotNull("Should not be null", config);
     }
 
@@ -34,7 +35,7 @@ public class ConstructorTest {
     @Test
     public void testConstructingWithFileObjectAndLoadAllValuesSetToTrueCreatesFile() throws IOException {
         File file = new File("./testConfigs/config.yml");
-        EasyConfig config = new EasyConfig(file, true);
+        EasyConfig config = new EasyConfig(file, true, true);
         Assert.assertTrue("Should exist!", file.exists());
     }
 
