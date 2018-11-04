@@ -1,7 +1,13 @@
 package com.wasykes.EasyConfig;
 
 /**
- * TODO: Add documentation
+ *
+ * ConfigComponent super class
+ *
+ * @author Darknuju
+ * @version 1.0
+ * @since 10/30/2018
+ *
  */
 public abstract class ConfigComponent {
 
