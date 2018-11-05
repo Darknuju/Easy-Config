@@ -19,6 +19,8 @@ import java.util.Arrays;
 public class LiveEditCommandComponent extends ConfigComponent implements CommandExecutor {
 
     private final String commandLabel;
+    private boolean backupComponentExists = false;
+    private BackupComponent backupComponent;
 
     /**
      *
@@ -33,10 +35,29 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         commandLabel = label;
     }
 
+    /**
+     *
+     * Constructs component with backup component to allow backup command.
+     *
+     * @param componentConfig Config component is binded to.
+     * @param label Command label.
+     * @param backup Backup component to add.
+     *
+     */
+    public LiveEditCommandComponent(EasyConfig componentConfig, String label, BackupComponent backup) {
+        super(componentConfig);
+        commandLabel = label;
+        backupComponentExists = true;
+        backupComponent = backup;
+    }
+
     private void sendUsageMessage(CommandSender sender, String command) {
         switch(command) {
             case "":
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get>"));
+                if (backupComponentExists)
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get/backup>"));
+                else
+                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get>"));
             case "list":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " list"));
             case "set":
@@ -62,6 +83,8 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
                     return executeSet(sender, args);
                 case "get":
                     return executeGet(sender, args);
+                case "backup":
+                    return executeBackup(sender);
                 default:
                     sendUsageMessage(sender, "");
                     return false;
@@ -143,5 +166,20 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         }
         sendUsageMessage(sender, "get");
         return false;
+    }
+
+    private boolean executeBackup(CommandSender sender) {
+        if (backupComponentExists) {
+            if (backupComponent.backup()) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Config backed up!"));
+                return true;
+            } else {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Failed to backup config!"));
+                return false;
+            }
+        } else {
+            sendUsageMessage(sender, "");
+            return false;
+        }
     }
 }

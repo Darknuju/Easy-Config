@@ -1,10 +1,13 @@
 import com.wasykes.EasyConfig.EasyConfig;
+import com.wasykes.EasyConfig.components.BackupComponent;
 import com.wasykes.EasyConfig.components.LiveEditCommandComponent;
 import mocks.MockCommand;
 import mocks.MockSender;
 import org.bukkit.Material;
 import org.junit.*;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 public class CommandComponentTest {
@@ -76,5 +79,19 @@ public class CommandComponentTest {
         args[4] = "message";
         command.onCommand(mockSender, mockCommand, "test", args);
         Assert.assertEquals("Value should equal: This message!", "This message", config.getValue("Test2"));
+    }
+
+
+    @Test
+    public void testBackupCommandWorks() throws IOException {
+        EasyConfig newCfg = new EasyConfig("./testConfigs/testConfig.yml");
+        BackupComponent backup = new BackupComponent(newCfg);
+        LiveEditCommandComponent newCmd = new LiveEditCommandComponent(newCfg, "test", backup);
+        String[] args = new String[5];
+        args[0] = "backup";
+        newCmd.onCommand(mockSender, mockCommand, "test", args);
+        Assert.assertTrue("Should be true!", new File("./testConfigs/testConfig - backup.yml").delete());
+        new File("./testConfigs/testConfig.yml").delete();
+        new File("./testConfigs").delete();
     }
 }
