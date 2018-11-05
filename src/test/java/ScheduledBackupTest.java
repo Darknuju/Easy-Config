@@ -1,9 +1,6 @@
 import com.wasykes.EasyConfig.EasyConfig;
-import com.wasykes.EasyConfig.EasyConfigPlugin;
 import com.wasykes.EasyConfig.components.BackupComponent;
 import com.wasykes.EasyConfig.components.BackupRunnableComponent;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.junit.Assert;
 import org.junit.Test;

@@ -5,10 +5,6 @@ import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-
 public class BackupRunnableComponent extends ConfigComponent {
 
     private BackupComponent backup;
