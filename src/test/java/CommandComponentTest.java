@@ -5,9 +5,7 @@ import mocks.MockCommand;
 import mocks.MockSender;
 import org.bukkit.Material;
 import org.junit.*;
-
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 
 public class CommandComponentTest {
@@ -34,12 +32,9 @@ public class CommandComponentTest {
         String[] args = new String[1];
         args[0] = "list";
         command.onCommand(mockSender, mockCommand, "test", args);
-        Assert.assertTrue("Message should contain :!", mockSender.message.contains(":"));
-        Assert.assertTrue("Message should contain -!", mockSender.message.contains("-"));
-        Assert.assertTrue("Message should contain =!", mockSender.message.contains("="));
-        Assert.assertTrue("Message should contain Test1!", mockSender.message.contains("Test1"));
-        Assert.assertTrue("Message should contain Test2!", mockSender.message.contains("Test2"));
-        Assert.assertTrue("Message should contain Test3!", mockSender.message.contains("Test3"));
+        Assert.assertTrue("Message should contain Test3!", (mockSender.message.contains("Test1")
+                && mockSender.message.contains("Test2")
+                && mockSender.message.contains("Test3")));
     }
 
     @Test
