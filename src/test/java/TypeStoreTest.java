@@ -96,8 +96,8 @@ public class TypeStoreTest {
     @After
     public void deleteConfig() {
         File fileToDelete = new File("./testConfigs/testTypes.yml");
-        Assert.assertTrue("Should delete config file!", fileToDelete.delete());
+        fileToDelete.delete();
         File folderToDelete = new File("./testConfigs");
-        Assert.assertTrue("Should delete config folder!", folderToDelete.delete());
+        folderToDelete.delete();
     }
 }
