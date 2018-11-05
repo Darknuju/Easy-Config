@@ -1,4 +1,4 @@
-package com.wasykes.EasyConfig.command;
+package com.wasykes.EasyConfig.components;
 
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
@@ -16,7 +16,7 @@ import java.util.Arrays;
  * @since 10/30/2018
  *
  */
-public class LiveEditCommand extends ConfigComponent implements CommandExecutor {
+public class LiveEditCommandComponent extends ConfigComponent implements CommandExecutor {
 
     private final String commandLabel;
 
@@ -28,7 +28,7 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
      * @param label Command label.
      *
      */
-    public LiveEditCommand(EasyConfig componentConfig, String label) {
+    public LiveEditCommandComponent(EasyConfig componentConfig, String label) {
         super(componentConfig);
         commandLabel = label;
     }
@@ -72,9 +72,9 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
 
     /**
      *
-     * List command to list all paths in memory.
+     * List components to list all paths in memory.
      *
-     * @param sender Sender of command.
+     * @param sender Sender of components.
      * @return Boolean which is passed back to be returned in onCommand in proper use.
      *
      */
@@ -85,9 +85,9 @@ public class LiveEditCommand extends ConfigComponent implements CommandExecutor 
 
     /**
      *
-     * Set command edits configuration in memory.
+     * Set components edits configuration in memory.
      *
-     * @param args Arguments of command.
+     * @param args Arguments of components.
      * @return Boolean which is passed back to be returned in onCommand in proper use.
      *
      */

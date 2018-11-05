@@ -1,16 +1,16 @@
 import com.wasykes.EasyConfig.EasyConfig;
-import com.wasykes.EasyConfig.command.LiveEditCommand;
+import com.wasykes.EasyConfig.components.LiveEditCommandComponent;
 import mocks.MockCommand;
 import mocks.MockSender;
 import org.bukkit.Material;
 import org.junit.*;
-import java.io.File;
+
 import java.io.IOException;
 
 public class CommandComponentTest {
 
     private EasyConfig config;
-    private LiveEditCommand command;
+    private LiveEditCommandComponent command;
     private MockSender mockSender;
     private MockCommand mockCommand;
 
@@ -21,7 +21,7 @@ public class CommandComponentTest {
         config.setValue("Test1", 3);
         config.setValue("Test2", "Success!");
         config.setValue("Test3", Material.APPLE);
-        command = new LiveEditCommand(config, "test");
+        command = new LiveEditCommandComponent(config, "test");
         mockSender = new MockSender();
         mockCommand = new MockCommand();
     }
