@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 /**
  *
- * Class used to implement live config editing commands.
+ * Component used to implement live config editing commands.
  *
  * @author Darknuju
  * @version 1.0
@@ -26,7 +26,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
      *
      * Constructs component.
      *
-     * @param componentConfig Config component is binded to.
+     * @param componentConfig Config component is bound to.
      * @param label Command label.
      *
      */
@@ -93,27 +93,11 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         return false;
     }
 
-    /**
-     *
-     * List components to list all paths in memory.
-     *
-     * @param sender Sender of components.
-     * @return Boolean which is passed back to be returned in onCommand in proper use.
-     *
-     */
     private boolean executeList(CommandSender sender) {
         sender.sendMessage(Util.buildPathListMessage(getComponentConfig().getPaths()));
         return true;
     }
 
-    /**
-     *
-     * Set components edits configuration in memory.
-     *
-     * @param args Arguments of components.
-     * @return Boolean which is passed back to be returned in onCommand in proper use.
-     *
-     */
     private boolean executeSet(CommandSender sender, String[] args) {
         if (args.length > 3) {
             String path = args[1];
