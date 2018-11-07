@@ -37,6 +37,9 @@ public class EasyConfig {
     public void setValue(String path, Object value) {
         values.put(path, value);
     }
+    public ArrayList<ConfigComponent> getConfigComponentList() {
+        return configComponentList;
+    }
 
     /**
      *
@@ -218,7 +221,7 @@ public class EasyConfig {
      * @throws IOException Throws IOException if saving to config fails.
      *
      */
-    public void unloadAllValues() throws IOException {
+    public void unloadAllValues() {
         for(String path : values.keySet()) {
             yamlConfig.set(path, values.get(path));
         }
@@ -235,7 +238,6 @@ public class EasyConfig {
     public void addConfigComponent(ConfigComponent component) {
         configComponentList.add(component);
     }
-
 
     private void saveConfigFile() {
         try {
