@@ -5,6 +5,10 @@ import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -40,7 +44,8 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         LIST("list"),
         BACKUP("backup"),
         LOAD("load"),
-        UNLOAD("unload");
+        UNLOAD("unload"),
+        REVERT("revert");
 
         public final String label;
 
@@ -110,6 +115,9 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
                 case "unload":
                     if (commands.contains(ConfigCommand.UNLOAD))
                         return executeUnload(sender, args);
+                case "revert":
+                    if (commands.contains(ConfigCommand.REVERT))
+                        return executeRevert(sender);
                 default:
                     sendUsageMessage(sender, "");
                     return false;
@@ -206,6 +214,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
             return false;
         }
     }
+
     private boolean executeUnload(CommandSender sender, String[] args) {
         if (componentConfig.isLoadedToMemory(args[1])) {
             boolean result = componentConfig.unloadConfigurationFromMemory(args[1]);
@@ -217,6 +226,25 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
             return result;
         } else {
             sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Value not in memory!"));
+            return false;
+        }
+    }
+
+    private boolean executeRevert(CommandSender sender) {
+        File backupFile = new File(componentConfig.getRawConfigFile().getPath().replace(".yml", " - backup.yml"));
+        if (backupFile.exists()) {
+            try {
+                componentConfig.getRawConfigFile().delete();
+                Files.copy(backupFile.toPath(), componentConfig.getRawConfigFile().toPath());
+            } catch(IOException e) {
+                e.printStackTrace();
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Unable to revert to old backup!"));
+                return false;
+            }
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Successfully reverted! No current memory values will be changed."));
+            return true;
+        } else {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4No backup file to revert to!"));
             return false;
         }
     }

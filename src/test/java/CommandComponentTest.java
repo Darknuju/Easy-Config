@@ -4,6 +4,7 @@ import com.wasykes.EasyConfig.components.LiveEditCommandComponent;
 import mocks.MockCommand;
 import mocks.MockSender;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.*;
 import java.io.File;
 import java.io.IOException;
@@ -89,6 +90,26 @@ public class CommandComponentTest {
         args[0] = "backup";
         command.onCommand(mockSender, mockCommand, "test", args);
         Assert.assertTrue("Should be true!", new File("./testConfigs/testConfig - backup.yml").delete());
+    }
+
+    @Test
+    public void testBackupRevertCommandWorks() throws IOException {
+        config.getRawConfigFile().getParentFile().mkdir();
+        config.getRawConfigFile().createNewFile();
+        config.setValue("Test1", "test1");
+        config.unloadConfigurationFromMemory("Test1");
+        backup.backup();
+        config.setValue("Test1", "test2");
+        config.unloadConfigurationFromMemory("Test1");
+        String[] args = new String[1];
+        args[0] = "revert";
+        command.onCommand(mockSender, mockCommand, "test", args);
+        Assert.assertEquals("Should equal test1!", "test1", YamlConfiguration.loadConfiguration(config.getRawConfigFile()).getString("Test1"));
+    }
+
+    @After
+    public void deleteAllFiles() {
+        new File("./testConfigs/testConfig - backup.yml").delete();
         new File("./testConfigs/testConfig.yml").delete();
         new File("./testConfigs").delete();
     }
