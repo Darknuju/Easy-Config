@@ -218,7 +218,6 @@ public class EasyConfig {
      *
      * Unloads all values currently in memory and writes them all to config.
      * Writes to disk.
-     * @throws IOException Throws IOException if saving to config fails.
      *
      */
     public void unloadAllValues() {
