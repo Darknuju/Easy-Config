@@ -5,7 +5,11 @@ import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -19,8 +23,36 @@ import java.util.Arrays;
 public class LiveEditCommandComponent extends ConfigComponent implements CommandExecutor {
 
     private final String commandLabel;
-    private boolean backupComponentExists = false;
-    private BackupComponent backupComponent;
+    private ArrayList<ConfigCommand> commands = new ArrayList<>();
+    private Map<String, ConfigComponent> components = new HashMap<>();
+
+    public void addComponent(ConfigComponent component) {
+        components.put(component.componentLabel, component);
+    }
+
+    public void addCommand(ConfigCommand command) {
+        commands.add(command);
+    }
+
+    public enum ConfigCommand {
+        SET("set"),
+        GET("get"),
+        LIST("list"),
+        BACKUP("backup"),
+        LOAD("load"),
+        UNLOAD("unload");
+
+        public final String label;
+
+        ConfigCommand(String label) {
+            this.label = label;
+        }
+
+        @Override
+        public String toString() {
+            return label;
+        }
+    }
 
     /**
      *
@@ -31,33 +63,16 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
      *
      */
     public LiveEditCommandComponent(EasyConfig componentConfig, String label) {
-        super(componentConfig);
+        super(componentConfig, "command");
         commandLabel = label;
     }
 
-    /**
-     *
-     * Constructs component with backup component to allow backup command.
-     *
-     * @param componentConfig Config component is binded to.
-     * @param label Command label.
-     * @param backup Backup component to add.
-     *
-     */
-    public LiveEditCommandComponent(EasyConfig componentConfig, String label, BackupComponent backup) {
-        super(componentConfig);
-        commandLabel = label;
-        backupComponentExists = true;
-        backupComponent = backup;
-    }
-
-    private void sendUsageMessage(CommandSender sender, String command) {
-        switch(command) {
+    private void sendUsageMessage(CommandSender sender, String usedCommand) {
+        switch(usedCommand) {
             case "":
-                if (backupComponentExists)
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get/backup>"));
-                else
-                    sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <list/set/get>"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Usage: /" + commandLabel + " <" +
+                        String.join("/", commands.stream().map(ConfigCommand::toString).collect(Collectors.toList()))
+                        + ">"));
             case "list":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " list"));
             case "set":
@@ -78,13 +93,23 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
             }
             switch(args[0].toLowerCase()) {
                 case "list":
-                    return executeList(sender);
+                    if (commands.contains(ConfigCommand.LIST))
+                        return executeList(sender);
                 case "set":
-                    return executeSet(sender, args);
+                    if (commands.contains(ConfigCommand.SET))
+                        return executeSet(sender, args);
                 case "get":
-                    return executeGet(sender, args);
+                    if (commands.contains(ConfigCommand.GET))
+                        return executeGet(sender, args);
                 case "backup":
-                    return executeBackup(sender);
+                    if (commands.contains(ConfigCommand.BACKUP))
+                        return executeBackup(sender);
+                case "load":
+                    if (commands.contains(ConfigCommand.LOAD))
+                        return executeLoad(sender, args);
+                case "unload":
+                    if (commands.contains(ConfigCommand.UNLOAD))
+                        return executeUnload(sender, args);
                 default:
                     sendUsageMessage(sender, "");
                     return false;
@@ -153,8 +178,8 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
     }
 
     private boolean executeBackup(CommandSender sender) {
-        if (backupComponentExists) {
-            if (backupComponent.backup()) {
+        if (components.containsKey("backup")) {
+            if (((BackupComponent)components.get("backup")).backup()) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Config backed up!"));
                 return true;
             } else {
@@ -163,6 +188,35 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
             }
         } else {
             sendUsageMessage(sender, "");
+            return false;
+        }
+    }
+
+    private boolean executeLoad(CommandSender sender, String[] args) {
+        if (!componentConfig.isLoadedToMemory(args[1])) {
+            boolean result = componentConfig.loadConfigurationIntoMemory(args[1]);
+            if (result) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1" + args[1] + " loaded into memory!"));
+            } else {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Unable to load value!"));
+            }
+            return result;
+        } else {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Value already in memory!"));
+            return false;
+        }
+    }
+    private boolean executeUnload(CommandSender sender, String[] args) {
+        if (componentConfig.isLoadedToMemory(args[1])) {
+            boolean result = componentConfig.unloadConfigurationFromMemory(args[1]);
+            if (result) {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1" + args[1] + " unloaded from memory!"));
+            } else {
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Unable to unload value!"));
+            }
+            return result;
+        } else {
+            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Value not in memory!"));
             return false;
         }
     }

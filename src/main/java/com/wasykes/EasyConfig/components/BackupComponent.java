@@ -28,7 +28,7 @@ public class BackupComponent extends ConfigComponent {
      *
      */
     public BackupComponent(EasyConfig componentConfig) {
-        super(componentConfig);
+        super(componentConfig, "backup");
     }
 
     /**

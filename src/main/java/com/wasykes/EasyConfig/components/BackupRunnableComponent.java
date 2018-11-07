@@ -27,7 +27,7 @@ public class BackupRunnableComponent extends ConfigComponent {
      *
      */
     public BackupRunnableComponent(EasyConfig componentConfig, BackupComponent backup) {
-        super(componentConfig);
+        super(componentConfig, "backup_runnable");
         this.backup = backup;
     }
 

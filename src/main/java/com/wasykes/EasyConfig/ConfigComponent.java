@@ -12,10 +12,12 @@ package com.wasykes.EasyConfig;
 public abstract class ConfigComponent {
 
     protected EasyConfig componentConfig;
+    public final String componentLabel;
 
-    protected ConfigComponent(EasyConfig componentConfig) {
+    protected ConfigComponent(EasyConfig componentConfig, String label) {
         this.componentConfig = componentConfig;
         this.componentConfig.addConfigComponent(this);
+        this.componentLabel = label;
     }
 
     public void setComponentConfig(EasyConfig componentConfig) {
