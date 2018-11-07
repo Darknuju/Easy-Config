@@ -20,10 +20,10 @@ import java.util.Set;
  */
 public class EasyConfig {
 
-    File rawConfigFile;
-    YamlConfiguration yamlConfig;
-    Map<String, Object> values;
-    ArrayList<ConfigComponent> configComponentList;
+    private File rawConfigFile;
+    private YamlConfiguration yamlConfig;
+    private Map<String, Object> values;
+    private ArrayList<ConfigComponent> configComponentList;
 
     public File getRawConfigFile()  {
         return rawConfigFile;
@@ -57,17 +57,20 @@ public class EasyConfig {
      * @param rawConfigFile File object for config.
      * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically. False by default.
      * @param generateFile Determines whether a file is generated automatically or not. True by default.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory, boolean generateFile) throws IOException {
+    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory, boolean generateFile) {
 
         if (generateFile) {
             if (!rawConfigFile.getParentFile().exists()) {
                 rawConfigFile.getParentFile().mkdir();
             }
             if (!rawConfigFile.exists()) {
-                rawConfigFile.createNewFile();
+                try {
+                    rawConfigFile.createNewFile();
+                } catch(IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -92,10 +95,9 @@ public class EasyConfig {
      * Writes to disk if file not created.
      *
      * @param rawConfigFile File object for config.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(File rawConfigFile) throws IOException {
+    public EasyConfig(File rawConfigFile) {
         this(rawConfigFile, false, true);
     }
 
@@ -105,10 +107,9 @@ public class EasyConfig {
      * Writes to disk if file not created.
      *
      * @param path String path for config file.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(String path) throws IOException {
+    public EasyConfig(String path) {
         this(new File(path));
     }
 
@@ -119,10 +120,9 @@ public class EasyConfig {
      *
      * @param rawConfigFile File object for config.
      * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically. False by default.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) throws IOException {
+    public EasyConfig(File rawConfigFile, boolean loadAllValuesToMemory) {
         this(rawConfigFile, loadAllValuesToMemory, true);
     }
 
@@ -133,10 +133,9 @@ public class EasyConfig {
      *
      * @param path String path for config file.
      * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(String path, boolean loadAllValuesToMemory) throws IOException {
+    public EasyConfig(String path, boolean loadAllValuesToMemory) {
         this(new File(path), loadAllValuesToMemory, true);
     }
 
@@ -148,10 +147,9 @@ public class EasyConfig {
      * @param path File object for config.
      * @param loadAllValuesToMemory If true all values in the configuration will be loaded into memory automatically. False by default.
      * @param generateFile Determines whether a file is generated automatically or not. True by default.
-     * @throws IOException Throws IOException if unable to create or access file.
      *
      */
-    public EasyConfig(String path, boolean loadAllValuesToMemory, boolean generateFile) throws IOException {
+    public EasyConfig(String path, boolean loadAllValuesToMemory, boolean generateFile) {
         this(new File(path), loadAllValuesToMemory, generateFile);
     }
 
@@ -184,10 +182,9 @@ public class EasyConfig {
      *
      * @param path Configuration path.
      * @return Boolean indicating whether or not value existed at path and was successfully unloaded.
-     * @throws IOException Throws exception when writing data.
      *
      */
-    public boolean unloadConfigurationFromMemory(String path) throws IOException {
+    public boolean unloadConfigurationFromMemory(String path) {
         if (!Util.IsNotNull(yamlConfig, rawConfigFile, values)) {
             return false;
         }
@@ -195,7 +192,7 @@ public class EasyConfig {
         if (values.keySet().contains(path)) {
             yamlConfig.set(path, values.get(path));
             values.remove(path);
-            yamlConfig.save(rawConfigFile);
+            saveConfigFile();
             return true;
         } else {
             return false;
@@ -225,7 +222,7 @@ public class EasyConfig {
         for(String path : values.keySet()) {
             yamlConfig.set(path, values.get(path));
         }
-        yamlConfig.save(rawConfigFile);
+        saveConfigFile();
     }
 
     /**
@@ -237,6 +234,15 @@ public class EasyConfig {
      */
     public void addConfigComponent(ConfigComponent component) {
         configComponentList.add(component);
+    }
+
+
+    private void saveConfigFile() {
+        try {
+            yamlConfig.save(rawConfigFile);
+        } catch(IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }
