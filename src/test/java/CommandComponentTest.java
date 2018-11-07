@@ -13,6 +13,7 @@ public class CommandComponentTest {
 
     private EasyConfig config;
     private LiveEditCommandComponent command;
+    private BackupComponent backup;
     private MockSender mockSender;
     private MockCommand mockCommand;
 
@@ -25,6 +26,8 @@ public class CommandComponentTest {
         config.setValue("Test3", Material.APPLE);
         command = new LiveEditCommandComponent(config, "test");
         Arrays.stream(LiveEditCommandComponent.ConfigCommand.values()).forEach((cmd) -> command.addCommand(cmd));
+        backup = new BackupComponent(config);
+        command.addComponent(backup);
         mockSender = new MockSender();
         mockCommand = new MockCommand();
     }
@@ -78,19 +81,16 @@ public class CommandComponentTest {
         Assert.assertEquals("Value should equal: This message!", "This message", config.getValue("Test2"));
     }
 
-
     @Test
     public void testBackupCommandWorks() throws IOException {
-        EasyConfig newCfg = new EasyConfig("./testConfigs/testConfig.yml");
-        BackupComponent backup = new BackupComponent(newCfg);
-        LiveEditCommandComponent newCmd = new LiveEditCommandComponent(newCfg, "test");
-        newCmd.addComponent(backup);
-        Arrays.stream(LiveEditCommandComponent.ConfigCommand.values()).forEach((cmd) -> newCmd.addCommand(cmd));
-        String[] args = new String[5];
+        config.getRawConfigFile().getParentFile().mkdir();
+        config.getRawConfigFile().createNewFile();
+        String[] args = new String[1];
         args[0] = "backup";
-        newCmd.onCommand(mockSender, mockCommand, "test", args);
+        command.onCommand(mockSender, mockCommand, "test", args);
         Assert.assertTrue("Should be true!", new File("./testConfigs/testConfig - backup.yml").delete());
         new File("./testConfigs/testConfig.yml").delete();
         new File("./testConfigs").delete();
     }
+
 }
