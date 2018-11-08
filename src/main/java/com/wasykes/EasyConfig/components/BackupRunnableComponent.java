@@ -36,25 +36,28 @@ public class BackupRunnableComponent extends ConfigComponent {
      * Gets backup runnable.
      *
      * @param func Callback function called every time runnable is run.
+     * @param date Boolean to determine whether config backup uses date in file name.
      * @return Runnable that backs up config file when run.
      *
      */
-    public BukkitRunnable getRunnable(Runnable func) {
-        return new BackupRunnable(backup, func);
+    public BukkitRunnable getRunnable(Runnable func, boolean date) {
+        return new BackupRunnable(backup, func, date);
     }
 
     private class BackupRunnable extends BukkitRunnable {
         BackupComponent backup;
         Runnable callback;
+        boolean date;
 
-        BackupRunnable(BackupComponent backup, Runnable callback) {
+        BackupRunnable(BackupComponent backup, Runnable callback, boolean date) {
             this.backup = backup;
             this.callback = callback;
+            this.date = date;
         }
 
         @Override
         public void run() {
-            backup.backup();
+            backup.backup(date);
             if (Util.IsNotNull(callback)) {
                 callback.run();
             }

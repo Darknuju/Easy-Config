@@ -2,12 +2,14 @@ import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.components.BackupComponent;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Date;
 
 public class BackupComponentTest {
@@ -37,6 +39,19 @@ public class BackupComponentTest {
         config.unloadConfigurationFromMemory("Test");
         backup.backup();
         Assert.assertEquals("Should equal 99!", 99, YamlConfiguration.loadConfiguration(new File("./testConfigs/backupConfig - backup.yml")).getInt("Test"));
+    }
+
+    @Test
+    public void testCleanPastDateFiles() throws IOException {
+        EasyConfig config = new EasyConfig("./testConfigs/backupConfig.yml");
+        BackupComponent backup = new BackupComponent(config);
+        backup.backup(true);
+        File toDelFile1 = new File("./testConfigs/backupConfig - backup 01-01-1999.yml");
+        File toDelFile2 = new File("./testConfigs/backupConfig - backup 01-02-1999.yml");
+        toDelFile1.createNewFile();
+        toDelFile2.createNewFile();
+        backup.cleanUpBeforeDate(LocalDate.now());
+        Assert.assertFalse("Neither should exist!", (toDelFile1.exists() && toDelFile2.exists()));
     }
 
     @After

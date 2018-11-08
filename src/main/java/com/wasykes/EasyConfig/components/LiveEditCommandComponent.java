@@ -108,7 +108,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
                         return executeGet(sender, args);
                 case "backup":
                     if (commands.contains(ConfigCommand.BACKUP))
-                        return executeBackup(sender);
+                        return executeBackup(sender, args);
                 case "load":
                     if (commands.contains(ConfigCommand.LOAD))
                         return executeLoad(sender, args);
@@ -185,9 +185,13 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         return false;
     }
 
-    private boolean executeBackup(CommandSender sender) {
+    private boolean executeBackup(CommandSender sender, String[] args) {
         if (components.containsKey("backup")) {
-            if (((BackupComponent)components.get("backup")).backup()) {
+            boolean date = false;
+            if (args.length >= 2) {
+                date = args[1].equalsIgnoreCase("-date");
+            }
+            if (((BackupComponent)components.get("backup")).backup(date)) {
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&1Config backed up!"));
                 return true;
             } else {
