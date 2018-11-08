@@ -75,15 +75,19 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
     private void sendUsageMessage(CommandSender sender, String usedCommand) {
         switch(usedCommand) {
             case "":
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Usage: /" + commandLabel + " <" +
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " <" +
                         String.join("/", commands.stream().map(ConfigCommand::toString).collect(Collectors.toList()))
                         + ">"));
+                break;
             case "list":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " list"));
+                break;
             case "set":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " set path <string/number/decimal> value"));
+                break;
             case "get":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " get path"));
+                break;
         }
     }
 
