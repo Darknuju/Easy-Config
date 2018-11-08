@@ -5,6 +5,7 @@ easy-config.iml
 .settings
 .classpath
 .project
+.vscode
 
 # Compiled class file
 *.class
