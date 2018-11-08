@@ -2,6 +2,9 @@ target/*
 .idea
 .idea/workspace.xml
 easy-config.iml
+.settings
+.classpath
+.project
 
 # Compiled class file
 *.class
