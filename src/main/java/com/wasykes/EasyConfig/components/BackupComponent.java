@@ -91,9 +91,9 @@ public class BackupComponent extends ConfigComponent {
                 LocalDate fileDate = LocalDate.parse(files[i].substring(files[i].indexOf("p ") + 2, files[i].indexOf(".yml")), formatter);
                 if (date.isAfter(fileDate)) {
                     new File(configDir.getPath() + "/" + files[i]).delete();
-                    return true;
                 }
             }
+            return true;
         }
         return false;
     }
