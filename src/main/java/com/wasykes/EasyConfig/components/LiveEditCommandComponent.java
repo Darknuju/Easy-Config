@@ -6,7 +6,6 @@ import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
