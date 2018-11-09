@@ -4,10 +4,8 @@ Easy Config is a library built for [SpigotMC](https://www.spigotmc.org) to impro
 
 It is currently a WIP personal project of mine.
 
-## Planned Features:
+## Features:
 - In-Game real time configuration editing without reloading plugin.
 - Memory and disk read/write optimization.
 - Config backup.
 - Customizable auto config save event.
-
-All subject to change.

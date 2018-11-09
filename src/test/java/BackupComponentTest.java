@@ -51,7 +51,7 @@ public class BackupComponentTest {
         toDelFile1.createNewFile();
         toDelFile2.createNewFile();
         backup.cleanUpBeforeDate(LocalDate.now());
-        Assert.assertFalse("Neither should exist!", (toDelFile1.exists() && toDelFile2.exists()));
+        Assert.assertFalse("Neither should exist!", (toDelFile1.exists() || toDelFile2.exists()));
     }
 
     @After
