@@ -2,7 +2,6 @@ package com.wasykes.EasyConfig.components;
 
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
-import com.wasykes.EasyConfig.Util;
 import org.bukkit.scheduler.BukkitRunnable;
 
 /**
@@ -58,7 +57,7 @@ public class BackupRunnableComponent extends ConfigComponent {
         @Override
         public void run() {
             backup.backup(date);
-            if (Util.IsNotNull(callback)) {
+            if (callback != null) {
                 callback.run();
             }
         }

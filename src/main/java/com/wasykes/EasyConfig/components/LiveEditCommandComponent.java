@@ -3,16 +3,12 @@ package com.wasykes.EasyConfig.components;
 import com.google.common.collect.Lists;
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
-import com.wasykes.EasyConfig.Util;
 import org.bukkit.ChatColor;
 import org.bukkit.command.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -82,6 +78,24 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         commandLabel = label;
     }
 
+    /**
+     *
+     * Builds list of strings to be send through bukkit messages to player.
+     *
+     * @param paths Set of path strings to be added to list.
+     * @return Returns completed string to be sent.
+     *
+     */
+    public static String buildPathListMessage(Set<String> paths) {
+        String returnString = "&6:&3--&1========================&3--&6:\n";
+        for(String path : paths) {
+            returnString += "&6:&3--&6: &1" + path + "\n";
+        }
+        returnString += "&6:&3--&1========================&3--&6:";
+
+        return ChatColor.translateAlternateColorCodes('&', returnString);
+    }
+
     private void sendUsageMessage(CommandSender sender, String usedCommand) {
         switch(usedCommand) {
             case "":
@@ -141,7 +155,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
     }
 
     private boolean executeList(CommandSender sender) {
-        sender.sendMessage(Util.buildPathListMessage(getComponentConfig().getPaths()));
+        sender.sendMessage(buildPathListMessage(getComponentConfig().getPaths()));
         return true;
     }
 

@@ -166,7 +166,7 @@ public class EasyConfig {
      *
      */
     public boolean loadConfigurationIntoMemory(String path) {
-        if (!Util.IsNotNull(yamlConfig)) {
+        if (!IsNotNull(yamlConfig)) {
             return false;
         }
 
@@ -188,7 +188,7 @@ public class EasyConfig {
      *
      */
     public boolean unloadConfigurationFromMemory(String path) {
-        if (!Util.IsNotNull(yamlConfig, rawConfigFile, values)) {
+        if (!IsNotNull(yamlConfig, rawConfigFile, values)) {
             return false;
         }
 
@@ -244,6 +244,23 @@ public class EasyConfig {
         } catch(IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     *
+     * Test if arguments are null.
+     *
+     * @param args Arguments to test if null.
+     * @return Boolean whether or not any elements are null.
+     *
+     */
+    private boolean IsNotNull(Object... args) {
+        for (Object o : args) {
+            if (o == null) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
