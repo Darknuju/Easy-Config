@@ -1,5 +1,6 @@
 package com.wasykes.EasyConfig.components;
 
+import com.google.common.collect.Lists;
 import com.wasykes.EasyConfig.ConfigComponent;
 import com.wasykes.EasyConfig.EasyConfig;
 import com.wasykes.EasyConfig.Util;
@@ -34,8 +35,18 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
         components.put(component.componentLabel, component);
     }
 
+    public void addComponents(ConfigComponent ...components) {
+        for(ConfigComponent component: components) {
+            this.components.put(component.componentLabel, component);
+        }
+    }
+
     public void addCommand(ConfigCommand command) {
         commands.add(command);
+    }
+
+    public void addCommands(ConfigCommand ...commands) {
+        this.commands.addAll(Lists.newArrayList(commands));
     }
 
     public enum ConfigCommand {
@@ -83,7 +94,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " list"));
                 break;
             case "set":
-                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " set path <string/number/decimal> value"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " set path <string/number/decimal/boolean> value"));
                 break;
             case "get":
                 sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Syntax: /" + commandLabel + " get path"));
@@ -160,6 +171,19 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
                         return false;
                     }
                     break;
+                case "boolean":
+                    if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("fslse")) {
+                        try {
+                            value = Boolean.valueOf(args[3]);
+                            break;
+                        } catch (Exception e) {
+                            sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Invalid boolean value!"));
+                            return false;
+                        }
+                    } else {
+                        sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&4Invalid boolean value!"));
+                        return false;
+                    }
                 default:
                     sendUsageMessage(sender, "set");
                     return false;
