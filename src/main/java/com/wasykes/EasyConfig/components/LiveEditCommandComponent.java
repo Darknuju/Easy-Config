@@ -276,7 +276,7 @@ public class LiveEditCommandComponent extends ConfigComponent implements Command
     }
 
     private boolean executeRevert(CommandSender sender) {
-        File backupFile = new File(componentConfig.getRawConfigFile().getPath().replace(".yml", " - backup.yml"));
+        File backupFile = new File(componentConfig.getRawConfigFile().getPath().replace(".yml", "-backup.yml"));
         if (backupFile.exists()) {
             try {
                 componentConfig.getRawConfigFile().delete();

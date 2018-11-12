@@ -26,7 +26,7 @@ public class BackupComponentTest {
         EasyConfig config = new EasyConfig("./testConfigs/backupConfig.yml");
         BackupComponent backup = new BackupComponent(config);
         backup.backup(true);
-        File f = new File("./testConfigs/backupConfig - backup " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File f = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
         Assert.assertTrue("Should contain date (exist)!", f.exists());
     }
 
@@ -38,7 +38,7 @@ public class BackupComponentTest {
         config.setValue("Test", 99);
         config.unloadConfigurationFromMemory("Test");
         backup.backup();
-        Assert.assertEquals("Should equal 99!", 99, YamlConfiguration.loadConfiguration(new File("./testConfigs/backupConfig - backup.yml")).getInt("Test"));
+        Assert.assertEquals("Should equal 99!", 99, YamlConfiguration.loadConfiguration(new File("./testConfigs/backupConfig-backup.yml")).getInt("Test"));
     }
 
     @Test
@@ -46,8 +46,8 @@ public class BackupComponentTest {
         EasyConfig config = new EasyConfig("./testConfigs/backupConfig.yml");
         BackupComponent backup = new BackupComponent(config);
         backup.backup(true);
-        File toDelFile1 = new File("./testConfigs/backupConfig - backup 01-01-1999.yml");
-        File toDelFile2 = new File("./testConfigs/backupConfig - backup 01-02-1999.yml");
+        File toDelFile1 = new File("./testConfigs/backupConfig-backup-01-01-1999.yml");
+        File toDelFile2 = new File("./testConfigs/backupConfig-backup-01-02-1999.yml");
         toDelFile1.createNewFile();
         toDelFile2.createNewFile();
         backup.cleanUpBeforeDate(LocalDate.now());
@@ -58,9 +58,9 @@ public class BackupComponentTest {
     public void deleteConfig() {
         File fileToDelete = new File("./testConfigs/backupConfig.yml");
         fileToDelete.delete();
-        File fileToDelete2 = new File("./testConfigs/backupConfig - backup.yml");
+        File fileToDelete2 = new File("./testConfigs/backupConfig-backup.yml");
         fileToDelete2.delete();
-        File fileToDelete3 = new File("./testConfigs/backupConfig - backup " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File fileToDelete3 = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
         fileToDelete3.delete();
         File folderToDelete = new File("./testConfigs");
         folderToDelete.delete();

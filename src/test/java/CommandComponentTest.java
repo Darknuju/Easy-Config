@@ -89,7 +89,7 @@ public class CommandComponentTest {
         String[] args = new String[1];
         args[0] = "backup";
         command.onCommand(mockSender, mockCommand, "test", args);
-        Assert.assertTrue("Should be true!", new File("./testConfigs/testConfig - backup.yml").delete());
+        Assert.assertTrue("Should be true!", new File("./testConfigs/testConfig-backup.yml").delete());
     }
 
     @Test

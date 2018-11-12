@@ -14,7 +14,7 @@ public class ScheduledBackupTest {
     @Test
     public void testScheduledBackupCreatesFile() throws IOException {
         File rawConfigFile = new File("./testConfigs/sheduledConfig.yml");
-        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig - backup.yml");
+        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig-backup.yml");
         EasyConfig config = new EasyConfig(rawConfigFile);
         BackupComponent backup = new BackupComponent(config);
         BackupRunnableComponent backupRunnable = new BackupRunnableComponent(config, backup);
@@ -30,7 +30,7 @@ public class ScheduledBackupTest {
     @Test
     public void testScheduledBackupCreatesFileWithDate() throws IOException {
         File rawConfigFile = new File("./testConfigs/sheduledConfig.yml");
-        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig - backup " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
         EasyConfig config = new EasyConfig(rawConfigFile);
         BackupComponent backup = new BackupComponent(config);
         BackupRunnableComponent backupRunnable = new BackupRunnableComponent(config, backup);

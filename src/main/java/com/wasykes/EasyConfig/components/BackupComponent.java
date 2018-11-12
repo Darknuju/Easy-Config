@@ -43,7 +43,7 @@ public class BackupComponent extends ConfigComponent {
      */
     public boolean backup(boolean includeDate) {
         File mainFile = getComponentConfig().getRawConfigFile();
-        String suffix = includeDate ? " - backup " + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml" : " - backup.yml";
+        String suffix = includeDate ? "-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml" : "-backup.yml";
         File backupFile = new File(mainFile.getPath().replace(".yml", suffix));
         try {
             backupFile.delete();
@@ -75,7 +75,7 @@ public class BackupComponent extends ConfigComponent {
         File configDir = componentConfig.getRawConfigFile().getParentFile();
         FilenameFilter textFilter = new FilenameFilter() {
             public boolean accept(File dir, String name) {
-                return !(name.equalsIgnoreCase(getComponentConfig().getRawConfigFile().getName()) || name.equalsIgnoreCase(getComponentConfig().getRawConfigFile().getName().replace(".yml", " - backup.yml")));
+                return name.contains(getComponentConfig().getRawConfigFile().getName().replace(".yml", "")) && !(name.equalsIgnoreCase(getComponentConfig().getRawConfigFile().getName()) || name.equalsIgnoreCase(getComponentConfig().getRawConfigFile().getName().replace(".yml", "-backup.yml")));
             }
         };
 
@@ -84,7 +84,7 @@ public class BackupComponent extends ConfigComponent {
         if (files != null) {
             for (int i = 0; i < files.length; i++) {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");
-                LocalDate fileDate = LocalDate.parse(files[i].substring(files[i].indexOf("p ") + 2, files[i].indexOf(".yml")), formatter);
+                LocalDate fileDate = LocalDate.parse(files[i].substring(files[i].indexOf("p-") + 2, files[i].indexOf(".yml")), formatter);
                 if (date.isAfter(fileDate)) {
                     new File(configDir.getPath() + "/" + files[i]).delete();
                 }
