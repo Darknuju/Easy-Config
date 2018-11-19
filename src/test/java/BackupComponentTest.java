@@ -26,7 +26,7 @@ public class BackupComponentTest {
         EasyConfig config = new EasyConfig("./testConfigs/backupConfig.yml");
         BackupComponent backup = new BackupComponent(config);
         backup.backup(true);
-        File f = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File f = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("MM-dd-yyyy").format(new Date()) + ".yml");
         Assert.assertTrue("Should contain date (exist)!", f.exists());
     }
 
@@ -60,7 +60,7 @@ public class BackupComponentTest {
         fileToDelete.delete();
         File fileToDelete2 = new File("./testConfigs/backupConfig-backup.yml");
         fileToDelete2.delete();
-        File fileToDelete3 = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File fileToDelete3 = new File("./testConfigs/backupConfig-backup-" + new SimpleDateFormat("MM-dd-yyyy").format(new Date()) + ".yml");
         fileToDelete3.delete();
         File folderToDelete = new File("./testConfigs");
         folderToDelete.delete();

@@ -30,12 +30,12 @@ public class ScheduledBackupTest {
     @Test
     public void testScheduledBackupCreatesFileWithDate() throws IOException {
         File rawConfigFile = new File("./testConfigs/sheduledConfig.yml");
-        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml");
+        File rawConfigFileBackup = new File("./testConfigs/sheduledConfig-backup-" + new SimpleDateFormat("MM-dd-yyyy").format(new Date()) + ".yml");
         EasyConfig config = new EasyConfig(rawConfigFile);
         BackupComponent backup = new BackupComponent(config);
         BackupRunnableComponent backupRunnable = new BackupRunnableComponent(config, backup);
         BukkitRunnable runnable = backupRunnable.getRunnable(() -> {
-            Assert.assertTrue("File should contain date!", rawConfigFileBackup.getPath().contains(new SimpleDateFormat("dd-MM-yyyy").format(new Date())));
+            Assert.assertTrue("File should contain date!", rawConfigFileBackup.getPath().contains(new SimpleDateFormat("MM-dd-yyyy").format(new Date())));
             rawConfigFileBackup.delete();
             rawConfigFile.delete();
             rawConfigFile.getParentFile().delete();

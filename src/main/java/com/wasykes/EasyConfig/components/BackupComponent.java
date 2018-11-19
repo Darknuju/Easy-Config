@@ -43,7 +43,7 @@ public class BackupComponent extends ConfigComponent {
      */
     public boolean backup(boolean includeDate) {
         File mainFile = getComponentConfig().getRawConfigFile();
-        String suffix = includeDate ? "-backup-" + new SimpleDateFormat("dd-MM-yyyy").format(new Date()) + ".yml" : "-backup.yml";
+        String suffix = includeDate ? "-backup-" + new SimpleDateFormat("MM-dd-yyyy").format(new Date()) + ".yml" : "-backup.yml";
         File backupFile = new File(mainFile.getPath().replace(".yml", suffix));
         try {
             backupFile.delete();

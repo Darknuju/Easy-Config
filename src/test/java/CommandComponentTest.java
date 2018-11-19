@@ -109,7 +109,7 @@ public class CommandComponentTest {
 
     @After
     public void deleteAllFiles() {
-        new File("./testConfigs/testConfig - backup.yml").delete();
+        new File("./testConfigs/testConfig-backup.yml").delete();
         new File("./testConfigs/testConfig.yml").delete();
         new File("./testConfigs").delete();
     }
